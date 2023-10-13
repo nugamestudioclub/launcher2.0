@@ -1,0 +1,63 @@
+<games>
+    <game id="1">
+        <name>Station Obscurum</name>
+        <description>In the vastness of space, dangers are everywhere. You're an astronaut trying to fix your ship and discover an old space station. Explore it, face its threats, solve its puzzles, and find the parts you need to survive.</description>
+        <path>"../builds/Station Obscurum/StationObscurum.exe"</path>
+        <imagePath>https://stationobscurum.com/assets/img/Screenshot%202023-04-04%20172815.png</imagePath>
+    </game>
+    <game id="2">
+        <name>Museum Project</name>
+        <description>Explore and survive a massive art museum installed on Earth by unknown means. Craft tools to navigate the environment while staying connected to the people you left behind. Catalog the exhibits and, ultimately, decide their fate.</description>
+        <path>/mp</path>
+        <imagePath>https://nugamestudioclub.github.io/assets/img/MP_logo.png</imagePath>
+    </game>
+    <game id="3">
+        <name>Roots of Yggdrassil</name>
+        <description>Delve into the roots of the World Tree to save the myths that wrought it.</description>
+        <path>/roy</path>
+        <imagePath>https://img.itch.zone/aW1hZ2UvMTkxMzUxMS8xMTk4ODA1MS5wbmc=/347x500/WgmlH%2F.png</imagePath>
+    </game>
+    <game id="4">
+        <name>Rootkit Rampage</name>
+        <description>The year is 2003, and scams are running rampant across the internet. After tricking some poor fool into clicking a suspicious link, you've gained access to their computer's files. Wield the power of 1s and 0s to fight off the Firewall's minions and brick the drive!</description>
+        <path>/rkr</path>
+        <imagePath>https://nugamestudioclub.github.io/assets/img/Rootkitlogo.png</imagePath>
+    </game>
+    <game id="5">
+        <name>Checking In</name>
+        <description>A playful criticism of the American healthcare system, Checking In transports you to an ER desk and forces you to make difficult decisions about which patients to help. Try to reach company goals and keep your job at the end of a stressful, fast-paced week! Developed in Sept. 2023 for the Ludum Dare 54 Game Jam.</description>
+        <path>/cin</path>
+        <imagePath>https://raw.githubusercontent.com/nugamestudioclub/launcher2.0/main/Resources/CheckingIn.png</imagePath>
+    </game>
+    <game>
+        <name>Claustrophobia</name>
+        <description>You are an evil psychiatrist. 'your' patients have been institutionalized for extreme claustrophobia. Make them feel small.</description>
+        <path>/clophobia</path>
+        <imagePath>https://github.com/nugamestudioclub/launcher2.0/blob/main/Resources/Claustrophobia.png?raw=true</imagePath>
+    </game>
+    <game>
+        <name>Movement Shooter</name>
+        <description>This is a movement shooter where you power up your gun by bouncing off of walls. More charges equals more bullets and more recoil. Shoot all the red cubes in a level without being crushed or falling off the level. The number in the top right is the count of enemies left.</description>
+        <path>/movementshooter</path>
+        <imagePath>https://github.com/nugamestudioclub/launcher2.0/blob/main/Resources/MovementShooter.png?raw=true</imagePath>
+    </game>
+    <game>
+        <name>Seat Fighter</name>
+        <description>The jerk next to you is hogging the armrest... but he doesn't know that you're the legendary SEAT FIGHTER! Our game supports single-player and two-player couch coop! </description>
+        <path>/seatfighter</path>
+        <imagePath>https://github.com/nugamestudioclub/launcher2.0/blob/main/Resources/SeatFighter.jpg?raw=true</imagePath>
+    </game>
+    <game>
+        <name>Interitus</name>
+        <description>CONTENT WARNING: Body horror/gore, mutilation, torture. When the last known location of her estranged friend leads Evelyn to a remote castle, she discovers quickly that death and decay are not equal. Escape the force that keeps the residents trapped here through making the tough decisions necessary to survive in this horror visual novel.</description>
+        <path>/interitus</path>
+        <imagePath>https://img.itch.zone/aW1nLzExNzU1NTA1LnBuZw==/original/fhmvVp.png</imagePath>
+    </game>
+    <game>
+        <name>Bedtime</name>
+        <description>It's 9 pm, past your bedtime. You hear your stomach growling.You need a snack...However, your parents are having a dinner party downstairs. Use the darkness as cover as you conduct your heist to avoid any awkward conversations!</description>
+        <path>/bedtime</path>
+        <imagePath>https://nugamestudioclub.github.io/assets/img/betimelogo.png</imagePath>
+    </game>
+
+</games>
