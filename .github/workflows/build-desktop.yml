@@ -10,7 +10,7 @@ on:
 
 env:
   PROJECT_DIR: game_studio_launcher/game_studio_launcher
-  FLUTTER_VERSION: '3.35.0'
+  FLUTTER_VERSION: '3.35.4'
 
 jobs:
   build:
