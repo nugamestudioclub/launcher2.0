@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
@@ -14,7 +13,6 @@ import 'index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  usePathUrlStrategy();
 
   await FlutterFlowTheme.initialize();
 
@@ -52,8 +50,9 @@ class _MyAppState extends State<MyApp> {
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
 
+    // InitialPage listens to the notifier, so this no longer needs setState.
     Future.delayed(Duration(milliseconds: 20),
-        () => setState(() => _appStateNotifier.stopShowingSplashImage()));
+        () => _appStateNotifier.stopShowingSplashImage());
   }
 
   void setLocale(String language) {

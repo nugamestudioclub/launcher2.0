@@ -10,7 +10,10 @@ import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
 import 'package:game_studio_launcher/gameItem.dart';
+import 'package:game_studio_launcher/game_catalog.dart';
 import 'package:game_studio_launcher/pages/home_page/importer.dart';
+import 'add_game_dialog.dart';
+import 'game_banner.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -47,14 +50,78 @@ class _HomePageWidgetState extends State<HomePageWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
-    slowLoadXml();
+    _loadGames();
   }
 
-  void slowLoadXml() async {
-    List<GameItem> gData = parseXmlData(await readXmLFile());
-    setState(() {
-      gameData = gData;
-    });
+  Future<void> _loadGames() async {
+    final games = await GameCatalog.load();
+    if (!mounted) {
+      return;
+    }
+    setState(() => gameData = games);
+  }
+
+  /// Collects a new game from the user and appends it to the catalog.
+  Future<void> _addGame() async {
+    final game = await AddGameDialog.show(context);
+    if (game == null || !mounted) {
+      return;
+    }
+
+    setState(() => gameData = [...gameData, game]);
+    await _persist();
+  }
+
+  /// Drops [game] from the catalog once the user confirms.
+  Future<void> _removeGame(GameItem game) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        title: Text('Remove ${game.name}?',
+            style: FlutterFlowTheme.of(context).titleLarge),
+        content: Text(
+          'This takes the game out of the launcher. The game itself stays '
+          'installed on this PC.',
+          style: FlutterFlowTheme.of(context).bodyMedium,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancel',
+                style: TextStyle(
+                    color: FlutterFlowTheme.of(context).secondaryText)),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: FilledButton.styleFrom(
+                backgroundColor: FlutterFlowTheme.of(context).error),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !mounted) {
+      return;
+    }
+
+    setState(() => gameData = gameData.where((g) => g != game).toList());
+    await _persist();
+  }
+
+  /// Writes the catalog to disk, surfacing a failure rather than losing it.
+  Future<void> _persist() async {
+    try {
+      await GameCatalog.save(gameData);
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not save the game list: $e')),
+      );
+    }
   }
 
   @override
@@ -125,20 +192,32 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          data.imagePath,
+                        child: GameBanner(
+                          imagePath: data.imagePath,
                           width: 200.0,
                           height: 163.0,
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                     Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 5.0, 5.0),
-                      child: Text(
-                        data.name,
-                        style: FlutterFlowTheme.of(context).titleLarge,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              data.name,
+                              style: FlutterFlowTheme.of(context).titleLarge,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => _removeGame(data),
+                            icon: const Icon(Icons.delete_outline),
+                            color: FlutterFlowTheme.of(context).error,
+                            tooltip: 'Remove from launcher',
+                            splashRadius: 20.0,
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
@@ -254,6 +333,42 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               alignment: AlignmentDirectional(
                                                   0.00, -1.00),
                                               child: FFButtonWidget(
+                                                onPressed: _addGame,
+                                                text: 'Add Game',
+                                                icon: const Icon(Icons.add,
+                                                    size: 20.0),
+                                                options: FFButtonOptions(
+                                                  width: 200.0,
+                                                  height: 40.0,
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          24.0, 0.0, 24.0, 0.0),
+                                                  iconPadding:
+                                                      EdgeInsetsDirectional
+                                                          .fromSTEB(0.0, 0.0,
+                                                              0.0, 0.0),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  textStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .titleSmall,
+                                                  elevation: 3.0,
+                                                  borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1.0,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: AlignmentDirectional(
+                                                  0.00, -1.00),
+                                              child: FFButtonWidget(
                                                 onPressed: () {
                                                   for (GameItem data
                                                       in gameData) {
@@ -302,37 +417,39 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 ),
                               ),
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.83,
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.8,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.00, 0.00),
-                                    child: GridView(
-                                      padding: EdgeInsets.zero,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing: 10.0,
-                                        mainAxisSpacing: 10.0,
-                                        childAspectRatio: 1.0,
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height:
+                                        MediaQuery.sizeOf(context).height * 0.8,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                    ),
+                                    child: Align(
+                                      alignment:
+                                          AlignmentDirectional(0.00, 0.00),
+                                      child: GridView(
+                                        padding: EdgeInsets.zero,
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          crossAxisSpacing: 10.0,
+                                          mainAxisSpacing: 10.0,
+                                          childAspectRatio: 1.0,
+                                        ),
+                                        scrollDirection: Axis.vertical,
+                                        children: [
+                                          ...gameCards,
+                                        ],
                                       ),
-                                      scrollDirection: Axis.vertical,
-                                      children: [
-                                        ...gameCards,
-                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),

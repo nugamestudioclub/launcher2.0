@@ -32,44 +32,57 @@ class AppStateNotifier extends ChangeNotifier {
   }
 }
 
+/// Full-screen club logo shown while the app finishes starting up.
+class SplashImage extends StatelessWidget {
+  const SplashImage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: Colors.transparent,
+        child: Center(
+          child: Image.asset(
+            'assets/images/NuGameStudioClub2023.png',
+            width: MediaQuery.sizeOf(context).width * 1.0,
+            height: MediaQuery.sizeOf(context).height * 1.0,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+}
+
+/// Shows [SplashImage] until startup finishes, then the launcher itself.
+///
+/// This subscribes to [AppStateNotifier] directly instead of leaning on
+/// GoRouter's `refreshListenable`. Older go_router versions re-ran a route's
+/// builder on every refresh, which is what the generated splash gating relied
+/// on. Current versions re-parse the route information but reuse the existing
+/// page when the resulting match list is unchanged, so the builder never ran a
+/// second time and the splash image stayed on screen forever.
+class InitialPage extends StatelessWidget {
+  const InitialPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final appStateNotifier = AppStateNotifier.instance;
+    return ListenableBuilder(
+      listenable: appStateNotifier,
+      builder: (context, _) => appStateNotifier.showSplashImage
+          ? const SplashImage()
+          : HomePageWidget(),
+    );
+  }
+}
+
 GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) => appStateNotifier.showSplashImage
-          ? Builder(
-              builder: (context) => Container(
-                color: Colors.transparent,
-                child: Center(
-                  child: Image.asset(
-                    'assets/images/NuGameStudioClub2023.png',
-                    width: MediaQuery.sizeOf(context).width * 1.0,
-                    height: MediaQuery.sizeOf(context).height * 1.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            )
-          : HomePageWidget(),
+      errorBuilder: (context, state) => const InitialPage(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.showSplashImage
-              ? Builder(
-                  builder: (context) => Container(
-                    color: Colors.transparent,
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/NuGameStudioClub2023.png',
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: MediaQuery.sizeOf(context).height * 1.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                )
-              : HomePageWidget(),
+          builder: (context, _) => const InitialPage(),
         ),
         FFRoute(
           name: 'HomePage',
@@ -104,7 +117,7 @@ extension _GoRouterStateExtensions on GoRouterState {
       extra != null ? extra as Map<String, dynamic> : {};
   Map<String, dynamic> get allParams => <String, dynamic>{}
     ..addAll(pathParameters)
-    ..addAll(queryParameters)
+    ..addAll(uri.queryParameters)
     ..addAll(extraMap);
   TransitionInfo get transitionInfo => extraMap.containsKey(kTransitionInfoKey)
       ? extraMap[kTransitionInfoKey] as TransitionInfo
@@ -241,7 +254,8 @@ class RootPageContext {
   static bool isInactiveRootPage(BuildContext context) {
     final rootPageContext = context.read<RootPageContext?>();
     final isRootPage = rootPageContext?.isRootPage ?? false;
-    final location = GoRouter.of(context).location;
+    final location =
+        GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
     return isRootPage &&
         location != '/' &&
         location != rootPageContext?.errorRoute;

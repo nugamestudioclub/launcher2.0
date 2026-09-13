@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:intl/intl.dart';
@@ -171,9 +170,9 @@ Rect? getWidgetBoundingBox(BuildContext context) {
   }
 }
 
-bool get isAndroid => !kIsWeb && Platform.isAndroid;
-bool get isiOS => !kIsWeb && Platform.isIOS;
-bool get isWeb => kIsWeb;
+bool get isAndroid => Platform.isAndroid;
+bool get isiOS => Platform.isIOS;
+bool get isWindows => Platform.isWindows;
 
 const kBreakpointSmall = 479.0;
 const kBreakpointMedium = 767.0;

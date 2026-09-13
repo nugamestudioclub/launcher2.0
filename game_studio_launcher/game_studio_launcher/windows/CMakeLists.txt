@@ -6,6 +6,16 @@ project(game_studio_launcher LANGUAGES CXX)
 # the on-disk name of your application.
 set(BINARY_NAME "game_studio_launcher")
 
+# This project lives under a long path (Documents/Northeastern University/...),
+# which pushes the generated MSBuild artifact paths past the legacy 260-char
+# MAX_PATH limit. Windows long-path support is enabled system-wide, but
+# MSBuild's FileTracker is a legacy component that ignores it and fails with
+# "FileTracker : error FTK1011: could not create the new file tracking log
+# file". FileTracker only provides MSBuild-side incremental tracking for custom
+# build steps; CMake already tracks those dependencies itself, so turning it
+# off is safe here and lets the build run from the current checkout location.
+set(CMAKE_VS_GLOBALS "TrackFileAccess=false")
+
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
 cmake_policy(VERSION 3.14...3.25)

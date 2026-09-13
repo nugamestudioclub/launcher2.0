@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
 import 'package:game_studio_launcher/gameItem.dart';
-import 'package:process_run/cmd_run.dart';
 import 'dart:io' show Platform, Process;
 
 Future<XmlDocument> readXmLFile() async {
@@ -10,29 +9,54 @@ Future<XmlDocument> readXmLFile() async {
   return XmlDocument.parse(xmlString);
 }
 
+/// Text of the first [tag] child of [game], or '' when absent or empty.
+///
+/// Reading `firstChild!.value` instead would throw on an entry that leaves a
+/// field blank (`<description></description>`), which games added through the
+/// in-app form can easily do.
+String _childText(XmlElement game, String tag) {
+  final matches = game.findElements(tag);
+  return matches.isEmpty ? '' : matches.first.innerText.trim();
+}
+
 List<GameItem> parseXmlData(XmlDocument document) {
   Iterable<XmlElement> games = document.findAllElements('game');
   List<GameItem> gameItems = [];
   for (var game in games) {
-    String? name = game.findElements('name').first.firstChild!.value;
-    String? description =
-        game.findElements('description').first.firstChild!.value;
-    String? path = game.findElements('path').first.firstChild!.value;
-    String? imagePath = game.findElements('imagePath').first.firstChild!.value;
-
-    // Print these values to the console
-    if (name != null) print('Name: $name');
-    if (description != null) print('Description: $description');
-    if (path != null) print('Path: $path');
-    if (imagePath != null) print('Image Path: $imagePath');
+    final name = _childText(game, 'name');
+    // An unnamed entry has nothing to show in the list, so skip it rather than
+    // rendering a blank card.
+    if (name.isEmpty) {
+      continue;
+    }
     gameItems.add(GameItem(
-        name: name!,
-        description: description!,
-        path: path!,
-        imagePath: imagePath!,
+        name: name,
+        description: _childText(game, 'description'),
+        path: _childText(game, 'path'),
+        imagePath: _childText(game, 'imagePath'),
         isVisible: true));
   }
   return gameItems;
+}
+
+/// Serializes [games] back into the same shape as `assets/games.xml`.
+///
+/// `isVisible` is deliberately not written out: it is transient
+/// show/hide state for the sidebar filter, not part of the catalog.
+String gamesToXmlString(List<GameItem> games) {
+  final builder = XmlBuilder();
+  builder.processing('xml', 'version="1.0"');
+  builder.element('games', nest: () {
+    for (final game in games) {
+      builder.element('game', nest: () {
+        builder.element('name', nest: game.name);
+        builder.element('description', nest: game.description);
+        builder.element('path', nest: game.path);
+        builder.element('imagePath', nest: game.imagePath);
+      });
+    }
+  });
+  return builder.buildDocument().toXmlString(pretty: true, indent: '    ');
 }
 
 Widget _buildPopupDialog(BuildContext context, String title, var error) {
