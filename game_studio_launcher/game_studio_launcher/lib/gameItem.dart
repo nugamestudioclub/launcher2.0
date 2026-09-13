@@ -1,5 +1,5 @@
-class GameItem{
-   String name;
+class GameItem {
+  String name;
   String description;
   String path;
   String imagePath;

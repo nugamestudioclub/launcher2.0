@@ -80,7 +80,8 @@ void main() {
         reparsed.map((g) => g.description),
         original.map((g) => g.description),
       );
-      expect(reparsed.map((g) => g.imagePath), original.map((g) => g.imagePath));
+      expect(
+          reparsed.map((g) => g.imagePath), original.map((g) => g.imagePath));
     });
 
     test('a game added to the list survives a save/load cycle', () {
