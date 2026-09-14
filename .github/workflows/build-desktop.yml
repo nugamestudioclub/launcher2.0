@@ -20,7 +20,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: windows-latest
+          # Pinned rather than windows-latest: that label now resolves to the
+          # windows-2025-vs2026 image (Visual Studio 2026, major version 18).
+          # Flutter 3.35.4 only maps VS 17 to a CMake generator and falls back
+          # to "Visual Studio 16 2019" for anything else, so CMake fails with
+          # "could not find any instance of Visual Studio". Move this back to
+          # windows-latest once FLUTTER_VERSION is a release that knows VS 18.
+          - os: windows-2022
             target: windows
           - os: macos-latest
             target: macos
