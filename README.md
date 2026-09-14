@@ -8,3 +8,7 @@ This open source launcher allows a user to view and launch games in a visual fas
     - Adding a game opens a window allowing for Name, Description, Banner and Exe link to be inpjtted.
 - Enabling/Disabling the visual view of games on the list on a temporary basis.
 - Launching the games by clicking on the visual Box for the provided game.
+
+# Contributors
+*Feel free to add your name to the list*
+- Marco S Hampel
