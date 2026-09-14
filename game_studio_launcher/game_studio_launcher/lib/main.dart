@@ -1,15 +1,11 @@
-import 'dart:ui';
 
 import 'package:provider/provider.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
-import 'flutter_flow/nav/nav.dart';
-import 'index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +22,8 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   State<MyApp> createState() => _MyAppState();
@@ -94,7 +92,7 @@ class _MyAppState extends State<MyApp> {
 class ErrorHandlerWidget extends StatefulWidget {
   final Widget child;
 
-  ErrorHandlerWidget({required this.child});
+  const ErrorHandlerWidget({super.key, required this.child});
 
   @override
   _ErrorHandlerWidgetState createState() => _ErrorHandlerWidgetState();
@@ -104,7 +102,6 @@ class _ErrorHandlerWidgetState extends State<ErrorHandlerWidget> {
   // Error handling logic
   void onError(FlutterErrorDetails errorDetails) {
     // Add your error handling logic here, e.g., logging, reporting to a server, etc.
-    print('Caught error: ${errorDetails.exception}');
   }
 
   @override
@@ -130,7 +127,7 @@ class ErrorWidgetBuilder extends StatefulWidget {
   final void Function(FlutterErrorDetails) onError;
   final Widget child;
 
-  ErrorWidgetBuilder({
+  const ErrorWidgetBuilder({super.key, 
     required this.builder,
     required this.onError,
     required this.child,

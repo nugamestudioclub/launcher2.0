@@ -12,7 +12,7 @@ import 'game_banner.dart';
 /// Pops the new [GameItem] when saved, or null when cancelled; persisting it is
 /// the caller's job.
 class AddGameDialog extends StatefulWidget {
-  const AddGameDialog({Key? key}) : super(key: key);
+  const AddGameDialog({super.key});
 
   static Future<GameItem?> show(BuildContext context) => showDialog<GameItem>(
         context: context,

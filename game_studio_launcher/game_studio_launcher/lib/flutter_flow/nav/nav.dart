@@ -1,17 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import '/index.dart';
-import '/main.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/lat_lng.dart';
-import '/flutter_flow/place.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -34,7 +27,7 @@ class AppStateNotifier extends ChangeNotifier {
 
 /// Full-screen club logo shown while the app finishes starting up.
 class SplashImage extends StatelessWidget {
-  const SplashImage({Key? key}) : super(key: key);
+  const SplashImage({super.key});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -59,7 +52,7 @@ class SplashImage extends StatelessWidget {
 /// page when the resulting match list is unchanged, so the builder never ran a
 /// second time and the splash image stayed on screen forever.
 class InitialPage extends StatelessWidget {
-  const InitialPage({Key? key}) : super(key: key);
+  const InitialPage({super.key});
 
   @override
   Widget build(BuildContext context) {

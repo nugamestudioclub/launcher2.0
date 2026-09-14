@@ -60,9 +60,9 @@ String gamesToXmlString(List<GameItem> games) {
 }
 
 Widget _buildPopupDialog(BuildContext context, String title, var error) {
-  return new AlertDialog(
+  return AlertDialog(
     title: Text(title),
-    content: new Column(
+    content: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -70,7 +70,7 @@ Widget _buildPopupDialog(BuildContext context, String title, var error) {
       ],
     ),
     actions: <Widget>[
-      new TextButton(
+      TextButton(
         onPressed: () {
           Navigator.of(context).pop();
         },

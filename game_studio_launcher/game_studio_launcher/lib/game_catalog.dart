@@ -40,7 +40,6 @@ class GameCatalog {
     try {
       return parseXmlData(XmlDocument.parse(await file.readAsString()));
     } catch (e) {
-      print('Could not read $_fileName at ${file.path}: $e');
       return _loadBundled();
     }
   }
@@ -56,9 +55,7 @@ class GameCatalog {
     try {
       await file.parent.create(recursive: true);
       await file.writeAsString(await rootBundle.loadString(_bundledCatalog));
-    } catch (e) {
-      print('Could not seed $_fileName: $e');
-    }
+    } catch (e) {}
   }
 
   static Future<List<GameItem>> _loadBundled() async {
@@ -66,7 +63,6 @@ class GameCatalog {
       final bundled = await rootBundle.loadString(_bundledCatalog);
       return parseXmlData(XmlDocument.parse(bundled));
     } catch (e) {
-      print('Could not read bundled $_fileName: $e');
       return <GameItem>[];
     }
   }

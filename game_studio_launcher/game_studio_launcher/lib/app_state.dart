@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
-import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -23,7 +22,6 @@ class FFAppState extends ChangeNotifier {
             try {
               return jsonDecode(x);
             } catch (e) {
-              print("Can't decode persisted json. Error: $e.");
               return {};
             }
           }).toList() ??
@@ -40,73 +38,73 @@ class FFAppState extends ChangeNotifier {
 
   List<String> _GamesShown = [];
   List<String> get GamesShown => _GamesShown;
-  set GamesShown(List<String> _value) {
-    _GamesShown = _value;
+  set GamesShown(List<String> value) {
+    _GamesShown = value;
   }
 
-  void addToGamesShown(String _value) {
-    _GamesShown.add(_value);
+  void addToGamesShown(String value) {
+    _GamesShown.add(value);
   }
 
-  void removeFromGamesShown(String _value) {
-    _GamesShown.remove(_value);
+  void removeFromGamesShown(String value) {
+    _GamesShown.remove(value);
   }
 
-  void removeAtIndexFromGamesShown(int _index) {
-    _GamesShown.removeAt(_index);
+  void removeAtIndexFromGamesShown(int index) {
+    _GamesShown.removeAt(index);
   }
 
   void updateGamesShownAtIndex(
-    int _index,
+    int index,
     String Function(String) updateFn,
   ) {
-    _GamesShown[_index] = updateFn(_GamesShown[_index]);
+    _GamesShown[index] = updateFn(_GamesShown[index]);
   }
 
-  void insertAtIndexInGamesShown(int _index, String _value) {
-    _GamesShown.insert(_index, _value);
+  void insertAtIndexInGamesShown(int index, String value) {
+    _GamesShown.insert(index, value);
   }
 
   List<dynamic> _GamesData = [
     jsonDecode(
-        '{\"Name\":\"Station Obscurum\",\"Description\":\"Test description\",\"Path\":\"C://path/to/location\"}')
+        '{"Name":"Station Obscurum","Description":"Test description","Path":"C://path/to/location"}')
   ];
   List<dynamic> get GamesData => _GamesData;
-  set GamesData(List<dynamic> _value) {
-    _GamesData = _value;
+  set GamesData(List<dynamic> value) {
+    _GamesData = value;
     prefs.setStringList(
-        'ff_GamesData', _value.map((x) => jsonEncode(x)).toList());
+        'ff_GamesData', value.map((x) => jsonEncode(x)).toList());
   }
 
-  void addToGamesData(dynamic _value) {
-    _GamesData.add(_value);
-    prefs.setStringList(
-        'ff_GamesData', _GamesData.map((x) => jsonEncode(x)).toList());
-  }
-
-  void removeFromGamesData(dynamic _value) {
-    _GamesData.remove(_value);
+  void addToGamesData(dynamic value) {
+    _GamesData.add(value);
     prefs.setStringList(
         'ff_GamesData', _GamesData.map((x) => jsonEncode(x)).toList());
   }
 
-  void removeAtIndexFromGamesData(int _index) {
-    _GamesData.removeAt(_index);
+  void removeFromGamesData(dynamic value) {
+    _GamesData.remove(value);
+    prefs.setStringList(
+        'ff_GamesData', _GamesData.map((x) => jsonEncode(x)).toList());
+  }
+
+  void removeAtIndexFromGamesData(int index) {
+    _GamesData.removeAt(index);
     prefs.setStringList(
         'ff_GamesData', _GamesData.map((x) => jsonEncode(x)).toList());
   }
 
   void updateGamesDataAtIndex(
-    int _index,
+    int index,
     dynamic Function(dynamic) updateFn,
   ) {
-    _GamesData[_index] = updateFn(_GamesData[_index]);
+    _GamesData[index] = updateFn(_GamesData[index]);
     prefs.setStringList(
         'ff_GamesData', _GamesData.map((x) => jsonEncode(x)).toList());
   }
 
-  void insertAtIndexInGamesData(int _index, dynamic _value) {
-    _GamesData.insert(_index, _value);
+  void insertAtIndexInGamesData(int index, dynamic value) {
+    _GamesData.insert(index, value);
     prefs.setStringList(
         'ff_GamesData', _GamesData.map((x) => jsonEncode(x)).toList());
   }

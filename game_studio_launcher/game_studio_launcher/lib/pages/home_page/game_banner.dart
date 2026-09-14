@@ -13,11 +13,11 @@ import '/flutter_flow/flutter_flow_theme.dart';
 /// to a placeholder instead of Flutter's red error box.
 class GameBanner extends StatelessWidget {
   const GameBanner({
-    Key? key,
+    super.key,
     required this.imagePath,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   final String imagePath;
   final double? width;

@@ -3,9 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
@@ -16,7 +14,7 @@ import 'add_game_dialog.dart';
 import 'game_banner.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+  const HomePageWidget({super.key});
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
