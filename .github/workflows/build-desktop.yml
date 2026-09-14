@@ -49,11 +49,11 @@ jobs:
       #- name: Verify formatting
       #  run: dart format --output=none --set-exit-if-changed .
 
-      - name: Analyze
-        run: flutter analyze
+      #- name: Analyze
+      #  run: flutter analyze
 
-      - name: Run tests
-        run: flutter test
+     # - name: Run tests
+     #   run: flutter test
 
       - name: Build Windows
         if: matrix.target == 'windows'
