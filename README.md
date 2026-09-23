@@ -1,5 +1,5 @@
 # Game Studio Club Games Launcher
-This open source launcher allows a user to view and launch games in a visual fashion for simple access and display. Though designed for Game Studio Club's use, it is an open source project which can be openly used for other purposes.
+This open source launcher allows a user to view and launch games in a visual fashion for simple access and display. 
 
 # Features
 - Visualizing games stored locally on your computer. These visualizations contain:
@@ -12,3 +12,4 @@ This open source launcher allows a user to view and launch games in a visual fas
 # Contributors
 *Feel free to add your name to the list*
 - Marco S Hampel
+- Silvya Kelly :)
